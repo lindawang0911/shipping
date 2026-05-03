@@ -22,6 +22,9 @@
     --warn-bg: #FFF6E5;
     --warn-text: #8B5A00;
     --warn-line: #F0D89E;
+    --info-bg: #EAF2FA;
+    --info-text: #1F4D7A;
+    --info-line: #B8D4ED;
     --font-sans: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   }
@@ -36,16 +39,13 @@
     padding: 32px 16px 64px;
   }
 
-  /* Layout */
   .container { max-width: 980px; margin: 0 auto; }
   header {
     display: flex; align-items: flex-end; justify-content: space-between;
     padding-bottom: 20px; margin-bottom: 28px;
     border-bottom: 1px solid var(--line);
   }
-  .logo {
-    display: flex; align-items: center; gap: 12px;
-  }
+  .logo { display: flex; align-items: center; gap: 12px; }
   .logo-mark {
     width: 40px; height: 40px;
     background: var(--brand); color: white;
@@ -67,7 +67,6 @@
   }
   .meta strong { color: var(--ink-2); font-weight: 500; }
 
-  /* Two column layout */
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -78,7 +77,6 @@
     .grid { grid-template-columns: 1fr; }
   }
 
-  /* Card */
   .card {
     background: white;
     border: 1px solid var(--line);
@@ -94,13 +92,32 @@
   .card-title::before {
     content: ''; width: 16px; height: 2px; background: var(--brand);
   }
+  .card-title-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px;
+  }
+  .card-title-row .card-title { margin-bottom: 0; }
+  .applied-badge {
+    background: var(--brand);
+    color: white;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-weight: 500;
+    display: none;
+  }
+  .applied-badge.show { display: inline-block; }
 
-  /* Form */
   .field { margin-bottom: 14px; }
   .field:last-child { margin-bottom: 0; }
   .field-label {
     font-size: 12px; color: var(--ink-2); font-weight: 500;
     margin-bottom: 6px; display: block;
+  }
+  .field-hint {
+    font-size: 11px; color: var(--ink-3);
+    margin-top: 4px;
+    line-height: 1.5;
   }
   .input, .select {
     width: 100%; height: 38px;
@@ -114,9 +131,7 @@
     box-shadow: 0 0 0 3px rgba(112, 178, 77, 0.15);
   }
   .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-  .input-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-  /* Cai display */
   .cai-display {
     margin-top: 14px; padding: 12px 14px;
     background: var(--brand-bg); border-radius: 8px;
@@ -133,7 +148,6 @@
     margin-left: 6px;
   }
 
-  /* Mode toggle */
   .mode-toggle {
     display: flex; gap: 0;
     background: var(--brand-bg); border-radius: 8px; padding: 3px;
@@ -150,7 +164,6 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
 
-  /* Result */
   .result-card {
     background: linear-gradient(135deg, var(--ink) 0%, #2C3327 100%);
     color: white;
@@ -203,28 +216,106 @@
     margin-left: 3px; font-weight: 400;
   }
 
-  /* Warning */
-  .warning {
+  .alert {
     margin-top: 14px; padding: 11px 14px;
-    background: var(--warn-bg); color: var(--warn-text);
-    border: 1px solid var(--warn-line);
     border-radius: 8px;
     font-size: 12px; line-height: 1.6;
     display: flex; gap: 8px;
   }
-  .warning::before {
-    content: '!'; flex-shrink: 0;
+  .alert-warn {
+    background: var(--warn-bg); color: var(--warn-text);
+    border: 1px solid var(--warn-line);
+  }
+  .alert-info {
+    background: var(--info-bg); color: var(--info-text);
+    border: 1px solid var(--info-line);
+  }
+  .alert::before {
+    flex-shrink: 0;
     width: 16px; height: 16px;
-    background: var(--warn-text); color: var(--warn-bg);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 11px;
   }
+  .alert-warn::before { content: '!'; background: var(--warn-text); color: var(--warn-bg); }
+  .alert-info::before { content: 'i'; background: var(--info-text); color: var(--info-bg); font-style: italic; }
 
-  /* Empty state */
   .empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.5); position: relative; }
 
-  /* Footer notes */
+  /* 查詢區 */
+  .lookup-section { margin-top: 28px; }
+  .lookup-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .lookup-tabs {
+    display: flex; gap: 4px;
+    background: var(--brand-bg); border-radius: 8px; padding: 3px;
+    margin-bottom: 14px;
+  }
+  .lookup-tabs button {
+    flex: 1; padding: 8px 10px; border: 0; background: transparent;
+    font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+    color: var(--ink-2); cursor: pointer; border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .lookup-tabs button.active {
+    background: white; color: var(--brand-dark);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .search-input {
+    width: 100%; height: 40px;
+    border: 1px solid var(--line-2); border-radius: 8px;
+    padding: 0 14px;
+    font-family: var(--font-sans); font-size: 14px;
+  }
+  .search-input:focus {
+    outline: none; border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(112, 178, 77, 0.15);
+  }
+  .lookup-results {
+    margin-top: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .lookup-item {
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    transition: border-color 0.15s;
+  }
+  .lookup-item:hover { border-color: var(--brand); }
+  .lookup-item .name { color: var(--ink); font-weight: 500; font-size: 13px; }
+  .lookup-item .area { color: var(--ink-3); font-size: 11px; margin-top: 2px; }
+  .lookup-item .fee {
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--brand-dark); white-space: nowrap;
+    background: var(--brand-bg);
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .apply-btn {
+    background: var(--brand); color: white;
+    border: 0; padding: 6px 12px;
+    border-radius: 6px;
+    font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .apply-btn:hover { background: var(--brand-dark); }
+  .lookup-empty {
+    padding: 24px; text-align: center;
+    color: var(--ink-3); font-size: 13px;
+  }
+
   .notes {
     margin-top: 28px; padding: 18px 22px;
     background: white; border: 1px solid var(--line);
@@ -244,9 +335,7 @@
     margin-top: 24px; text-align: center;
     font-size: 11px; color: var(--ink-3);
   }
-  footer a { color: var(--brand-dark); text-decoration: none; font-weight: 500; }
 
-  /* optgroup styling */
   optgroup { font-weight: 600; color: var(--ink); }
   option { font-weight: 400; color: var(--ink-2); }
 </style>
@@ -263,16 +352,14 @@
       </div>
     </div>
     <div class="meta">
-      <div><strong>運價依據</strong> · 107/08/01 生效版</div>
+      <div><strong>運價依據</strong> · 2026/04 版</div>
       <div>含 5% 營業稅</div>
     </div>
   </header>
 
   <div class="grid">
-
     <!-- LEFT: Inputs -->
     <div>
-      <!-- Cai input card -->
       <div class="card" style="margin-bottom: 16px;">
         <div class="card-title">材積 · 才數</div>
 
@@ -309,9 +396,11 @@
         </div>
       </div>
 
-      <!-- Destination card -->
       <div class="card">
-        <div class="card-title">目的地 · 配送條件</div>
+        <div class="card-title-row">
+          <div class="card-title">目的地 · 配送條件</div>
+          <span class="applied-badge" id="applied-badge">已套用查詢結果</span>
+        </div>
         <div class="field">
           <label class="field-label">收件地區</label>
           <select id="dest" class="select">
@@ -347,19 +436,41 @@
               <option value="kaohsiung">高雄 / 三民 / 前鎮 / 鳳山</option>
               <option value="pingtung">屏東 / 屏工 / 潮州</option>
             </optgroup>
-            <optgroup label="宜花東（可能另收聯運費）">
+            <optgroup label="宜花東">
               <option value="luodong">羅東 / 宜蘭</option>
               <option value="hualien">花蓮 / 玉里</option>
               <option value="taitung">台東</option>
             </optgroup>
+            <optgroup label="外島（聯運費）">
+              <option value="kinmen_air">金門（空運）</option>
+              <option value="kinmen_sea">金門（海運）</option>
+              <option value="penghu_makung">澎湖馬公本島（空運）</option>
+              <option value="penghu_other">澎湖非馬公區域（空運）</option>
+            </optgroup>
           </select>
         </div>
         <div class="field">
-          <label class="field-label">配送樓層</label>
-          <select id="floor" class="select">
-            <option value="0">1 樓 / 騎樓（一般送費）</option>
-            <option value="1">2 樓以上 / 地下室（加收特服費）</option>
+          <label class="field-label">配送類型</label>
+          <select id="delivery_type" class="select">
+            <option value="ground">1 樓 / 騎樓（一般送費）</option>
+            <option value="upstairs">2 樓以上 / 地下室（特服費 30/60）</option>
+            <option value="hospital">醫學中心 / 區域級醫院（特服費 55/125）</option>
+            <option value="remote">偏遠困難點（聯運費，下方查詢用）</option>
           </select>
+          <div class="field-hint" id="type-hint" style="display:none;"></div>
+        </div>
+        <div class="field" id="remote-fee-field" style="display:none;">
+          <label class="field-label">聯運費級距</label>
+          <select id="remote_tier" class="select">
+            <option value="50_100">50 / 100</option>
+            <option value="80_160">80 / 160</option>
+            <option value="100_200">100 / 200</option>
+            <option value="160_320">160 / 320</option>
+            <option value="230_460">230 / 460</option>
+            <option value="360_720">360 / 720</option>
+            <option value="700_1400">700 / 1400</option>
+          </select>
+          <div class="field-hint">建議從下方搜尋確認該地址的級距後，再選擇對應級距</div>
         </div>
       </div>
     </div>
@@ -368,58 +479,83 @@
     <div class="result-card" id="result"></div>
   </div>
 
-  <!-- Notes -->
+  <!-- 查詢區（含分頁） -->
+  <div class="lookup-section">
+    <div class="lookup-card">
+      <div class="card-title">地點查詢 · 偏遠困難點 ＆ 醫院</div>
+
+      <div class="lookup-tabs">
+        <button id="tab-remote" class="active" type="button">偏遠地區查詢</button>
+        <button id="tab-hospital" type="button">醫院查詢</button>
+        <button id="tab-other" type="button">其他統倉/百貨</button>
+      </div>
+
+      <input type="text" id="lookup_search" class="search-input" placeholder="輸入鄉鎮、村里、地名（例：阿里山、烏來、長庚）">
+      <div class="lookup-results" id="lookup_results"></div>
+    </div>
+  </div>
+
   <div class="notes">
-    <div class="notes-title">說明</div>
+    <div class="notes-title">使用說明</div>
     <ul>
       <li><strong>才數計算</strong>：長 × 寬 × 高（cm）÷ 27,000，無條件進位至整數。1 才 ＝ 10 公斤。</li>
-      <li><strong>運費組成</strong>：接費（派車收件）＋ 本款（主運費）＋ 送費（含 2 樓以上之特殊服務費）。</li>
-      <li><strong>起碼運費</strong>：每段費用都會比較「實算金額」與「起碼金額」，取較高者。小件多半吃起碼運費。</li>
-      <li><strong>偏遠地區</strong>：宜花東、離島、外島可能改收聯運費（依公告），此時送費＋特服免計，實際以新竹物流出單為準。</li>
-      <li><strong>運價區歸屬</strong>：土城屬「新北市」運價區，與台北、三重、萬華、北投、信義、新店、八里、蘆洲、五股、中和、永和、樹林、汐止同價。</li>
+      <li><strong>運費組成</strong>：接費 ＋ 本款 ＋ 送費／特服／聯運費（三選一）。</li>
+      <li><strong>起碼運費</strong>：每段費用比較「實算金額」與「起碼金額」，取較高者；小件多半吃起碼運費。</li>
+      <li><strong>醫院特服</strong>：醫學中心、區域級醫院（不含一般診所）一律調定起碼 55、百公斤 125。</li>
+      <li><strong>長照／養護機構</strong>：若機構地址在一般市區，按住宅樓層計（1 樓或 2 樓以上）；若在偏遠地區，請先查偏遠級距。</li>
+      <li><strong>聯運費規則</strong>：選擇偏遠地區或外島時，自動以聯運費取代「送費＋特服費」。</li>
+      <li><strong>外島限制</strong>：澎湖馬公空運每件限 10 公斤、上限 3 才；離島部分區域無到付與代收貨件。</li>
     </ul>
   </div>
 
   <footer>
-    新竹物流客服專線 412-8866 · 本工具依運價表估算，實際費用以新竹物流出單為準
+    新竹物流客服 412-8866 · 本工具依運價表估算，實際費用以新竹物流出單為準
   </footer>
 </div>
 
 <script>
+  // ============ 基本本款費率 ============
   const RATES = {
-    local:     { name: "雙北本地",      bai: 65,  qima: 50,  remote: false },
-    taoyuan:   { name: "桃園",          bai: 65,  qima: 55,  remote: false },
-    zhongli:   { name: "中壢",          bai: 95,  qima: 55,  remote: false },
-    hsinchu:   { name: "新竹",          bai: 130, qima: 55,  remote: false },
-    zhunan:    { name: "竹南/頭份",     bai: 150, qima: 55,  remote: false },
-    miaoli:    { name: "苗栗",          bai: 150, qima: 55,  remote: false },
-    dajia:     { name: "大甲",          bai: 185, qima: 55,  remote: false },
-    shalu:     { name: "沙鹿",          bai: 220, qima: 55,  remote: false },
-    fengyuan:  { name: "豐原",          bai: 220, qima: 55,  remote: false },
-    taichung:  { name: "台中",          bai: 220, qima: 55,  remote: false },
-    nantou:    { name: "南投/草屯",     bai: 255, qima: 75,  remote: false },
-    puli:      { name: "埔里",          bai: 275, qima: 75,  remote: false },
-    changhua:  { name: "彰化",          bai: 255, qima: 55,  remote: false },
-    yuanlin:   { name: "員林",          bai: 255, qima: 55,  remote: false },
-    douliu:    { name: "斗六",          bai: 275, qima: 75,  remote: false },
-    chiayi:    { name: "嘉義",          bai: 290, qima: 75,  remote: false },
-    xinying:   { name: "新營",          bai: 320, qima: 75,  remote: false },
-    madou:     { name: "麻豆",          bai: 345, qima: 85,  remote: false },
-    tainan:    { name: "台南",          bai: 365, qima: 85,  remote: false },
-    gangshan:  { name: "岡山",          bai: 390, qima: 90,  remote: false },
-    kaohsiung: { name: "高雄",          bai: 390, qima: 95,  remote: false },
-    pingtung:  { name: "屏東",          bai: 415, qima: 100, remote: false },
-    luodong:   { name: "羅東/宜蘭",     bai: 185, qima: 65,  remote: true  },
-    hualien:   { name: "花蓮",          bai: 320, qima: 175, remote: true  },
-    taitung:   { name: "台東",          bai: 560, qima: 175, remote: true  }
+    local:     { name: "雙北本地",      bai: 65,  qima: 50 },
+    taoyuan:   { name: "桃園",          bai: 65,  qima: 55 },
+    zhongli:   { name: "中壢",          bai: 95,  qima: 55 },
+    hsinchu:   { name: "新竹",          bai: 130, qima: 55 },
+    zhunan:    { name: "竹南/頭份",     bai: 150, qima: 55 },
+    miaoli:    { name: "苗栗",          bai: 150, qima: 55 },
+    dajia:     { name: "大甲",          bai: 185, qima: 55 },
+    shalu:     { name: "沙鹿",          bai: 220, qima: 55 },
+    fengyuan:  { name: "豐原",          bai: 220, qima: 55 },
+    taichung:  { name: "台中",          bai: 220, qima: 55 },
+    nantou:    { name: "南投/草屯",     bai: 255, qima: 75 },
+    puli:      { name: "埔里",          bai: 275, qima: 75 },
+    changhua:  { name: "彰化",          bai: 255, qima: 55 },
+    yuanlin:   { name: "員林",          bai: 255, qima: 55 },
+    douliu:    { name: "斗六",          bai: 275, qima: 75 },
+    chiayi:    { name: "嘉義",          bai: 290, qima: 75 },
+    xinying:   { name: "新營",          bai: 320, qima: 75 },
+    madou:     { name: "麻豆",          bai: 345, qima: 85 },
+    tainan:    { name: "台南",          bai: 365, qima: 85 },
+    gangshan:  { name: "岡山",          bai: 390, qima: 90 },
+    kaohsiung: { name: "高雄",          bai: 390, qima: 95 },
+    pingtung:  { name: "屏東",          bai: 415, qima: 100 },
+    luodong:   { name: "羅東/宜蘭",     bai: 185, qima: 65 },
+    hualien:   { name: "花蓮",          bai: 320, qima: 175 },
+    taitung:   { name: "台東",          bai: 560, qima: 175 },
+    kinmen_air:    { name: "金門（空運）",   bai: 720, qima: 360, isIsland: true },
+    kinmen_sea:    { name: "金門（海運）",   bai: 600, qima: 300, isIsland: true },
+    penghu_makung: { name: "澎湖馬公（空運）", bai: 720, qima: 360, isIsland: true,
+                     note: "2 才內 220 元/件，每才另加 30 元；每件限 10 公斤、上限 3 才。" },
+    penghu_other:  { name: "澎湖（空運）",   bai: 720, qima: 360, isIsland: true }
   };
 
   const PICKUP_BAI = 37, PICKUP_QIMA = 27;
   const DELIVERY_BAI = 37, DELIVERY_QIMA = 27;
-  const SPECIAL_BAI = 60, SPECIAL_QIMA = 30;
+  const SPECIAL_NORMAL = { bai: 60, qima: 30 };
+  const SPECIAL_HOSPITAL = { bai: 125, qima: 55 };
 
   let mode = 'dim';
 
+  // ============ 才數計算 ============
   function getCai() {
     if (mode === 'dim') {
       const l = parseFloat(document.getElementById('length').value) || 0;
@@ -443,14 +579,14 @@
     };
   }
 
+  // ============ 主計算 ============
   function calc() {
     const caiData = getCai();
     const qty = Math.max(1, parseInt(document.getElementById('qty').value) || 1);
     const destKey = document.getElementById('dest').value;
-    const floor = parseInt(document.getElementById('floor').value);
+    const deliveryType = document.getElementById('delivery_type').value;
     const dest = RATES[destKey];
 
-    // Update cai display
     if (mode === 'dim') {
       const out = document.getElementById('cai-out');
       const raw = document.getElementById('cai-raw');
@@ -463,6 +599,21 @@
       }
     }
 
+    document.getElementById('remote-fee-field').style.display = (deliveryType === 'remote') ? '' : 'none';
+
+    const typeHint = document.getElementById('type-hint');
+    const hintMap = {
+      hospital: '⚠️ 限醫學中心、區域級醫院（如長庚、榮總、台大、奇美等）。一般診所不適用此費率，請選 1 樓或 2 樓以上。',
+      remote: '請從下方「偏遠地區查詢」確認級距，再選擇對應數值（或直接點查詢結果的「套用」按鈕）',
+      upstairs: '一般 2 樓以上、地下室、未列之公家機關／學校／賣場／百貨'
+    };
+    if (hintMap[deliveryType]) {
+      typeHint.textContent = hintMap[deliveryType];
+      typeHint.style.display = '';
+    } else {
+      typeHint.style.display = 'none';
+    }
+
     if (!caiData.valid) {
       document.getElementById('result').innerHTML = '<div class="empty">請先輸入包裹尺寸</div>';
       return;
@@ -470,29 +621,56 @@
 
     const totalKg = caiData.cai * 10 * qty;
     const ratio = totalKg / 100;
-
     const pickup = pickHigher(PICKUP_BAI, PICKUP_QIMA, ratio);
     const main = pickHigher(dest.bai, dest.qima, ratio);
-    const delivery = pickHigher(DELIVERY_BAI, DELIVERY_QIMA, ratio);
-    const special = floor === 1 ? pickHigher(SPECIAL_BAI, SPECIAL_QIMA, ratio) : null;
 
-    const total = pickup.amount + main.amount + delivery.amount + (special ? special.amount : 0);
+    let extras = [];
+    let extrasTotal = 0;
+    let warnText = '';
 
-    const rows = [
-      { label: '接費（派車收件）', data: pickup, calcText: PICKUP_BAI + ' × ' + ratio.toFixed(2) },
-      { label: '本款（土城→' + dest.name + '）', data: main, calcText: dest.bai + ' × ' + ratio.toFixed(2) },
-      { label: '送費', data: delivery, calcText: DELIVERY_BAI + ' × ' + ratio.toFixed(2) }
-    ];
-    if (special) {
-      rows.push({ label: '特殊服務費（2樓↑/B1）', data: special, calcText: SPECIAL_BAI + ' × ' + ratio.toFixed(2) });
+    if (deliveryType === 'remote') {
+      const tierStr = document.getElementById('remote_tier').value;
+      const [q, b] = tierStr.split('_').map(Number);
+      const lianyun = pickHigher(b, q, ratio);
+      extras.push({ label: '聯運費（取代送費＋特服）', data: lianyun, calcText: b + ' × ' + ratio.toFixed(2) });
+      extrasTotal += lianyun.amount;
+      warnText = '聯運費已取代送費與特服費，實際費率以新竹物流出單為準。';
+    } else if (dest.isIsland) {
+      const lianyun = pickHigher(dest.bai, dest.qima, ratio);
+      extras.push({ label: '聯運費（外島，取代送費＋特服）', data: lianyun, calcText: dest.bai + ' × ' + ratio.toFixed(2) });
+      extrasTotal += lianyun.amount;
+      warnText = (dest.note ? dest.note + ' ' : '') + '本款已含外島聯運費，實際以新竹物流出單為準。';
+    } else {
+      const delivery = pickHigher(DELIVERY_BAI, DELIVERY_QIMA, ratio);
+      extras.push({ label: '送費', data: delivery, calcText: DELIVERY_BAI + ' × ' + ratio.toFixed(2) });
+      extrasTotal += delivery.amount;
+
+      if (deliveryType === 'upstairs') {
+        const sp = pickHigher(SPECIAL_NORMAL.bai, SPECIAL_NORMAL.qima, ratio);
+        extras.push({ label: '特服費（2 樓以上 / B1）', data: sp, calcText: SPECIAL_NORMAL.bai + ' × ' + ratio.toFixed(2) });
+        extrasTotal += sp.amount;
+      } else if (deliveryType === 'hospital') {
+        const sp = pickHigher(SPECIAL_HOSPITAL.bai, SPECIAL_HOSPITAL.qima, ratio);
+        extras.push({ label: '特服費（醫學中心 / 區域醫院）', data: sp, calcText: SPECIAL_HOSPITAL.bai + ' × ' + ratio.toFixed(2) });
+        extrasTotal += sp.amount;
+      }
     }
+
+    const total = pickup.amount + main.amount + extrasTotal;
 
     let html = '';
     html += '<div class="result-label">總運費</div>';
     html += '<div class="result-total"><span class="currency">NT$</span>' + total.toLocaleString() + '</div>';
     html += '<div class="result-meta">' + caiData.cai + ' 才 × ' + qty + ' 件　·　共 ' + totalKg + ' kg　·　含 5% 稅</div>';
     html += '<div class="breakdown">';
-    rows.forEach(r => {
+
+    const allRows = [
+      { label: '接費（派車收件）', data: pickup, calcText: PICKUP_BAI + ' × ' + ratio.toFixed(2) },
+      { label: '本款（土城→' + dest.name + '）', data: main, calcText: dest.bai + ' × ' + ratio.toFixed(2) },
+      ...extras
+    ];
+
+    allRows.forEach(r => {
       const cls = r.data.isQima ? 'breakdown-row qima' : 'breakdown-row';
       html += '<div class="' + cls + '">';
       html += '<span>' + r.label + '</span>';
@@ -502,14 +680,14 @@
     });
     html += '</div>';
 
-    if (dest.remote) {
-      html += '<div class="warning">' + dest.name + '屬偏遠地區，實際出貨可能改收聯運費（聯運費另計，此時送費＋特服免計）。建議首次出貨後跟單比對實際費用。</div>';
+    if (warnText) {
+      html += '<div class="alert alert-warn">' + warnText + '</div>';
     }
 
     document.getElementById('result').innerHTML = html;
   }
 
-  // Mode toggle
+  // 模式切換
   document.getElementById('mode-dim').addEventListener('click', () => {
     mode = 'dim';
     document.getElementById('mode-dim').classList.add('active');
@@ -527,13 +705,319 @@
     calc();
   });
 
-  // Input listeners
-  ['length', 'width', 'height', 'cai-manual', 'qty', 'dest', 'floor'].forEach(id => {
+  ['length', 'width', 'height', 'cai-manual', 'qty', 'dest', 'delivery_type', 'remote_tier'].forEach(id => {
     const el = document.getElementById(id);
-    el.addEventListener('input', calc);
-    el.addEventListener('change', calc);
+    el.addEventListener('input', () => {
+      if (id !== 'remote_tier') hideAppliedBadge();
+      calc();
+    });
+    el.addEventListener('change', () => {
+      if (id !== 'remote_tier') hideAppliedBadge();
+      calc();
+    });
   });
 
+  // ============ 一鍵套用 ============
+  function applyLookup(item) {
+    const dest = document.getElementById('dest');
+    const deliveryType = document.getElementById('delivery_type');
+
+    // 設定目的地
+    if (item.destKey) {
+      dest.value = item.destKey;
+    }
+
+    // 設定配送類型
+    if (item.applyType === 'hospital') {
+      deliveryType.value = 'hospital';
+    } else if (item.applyType === 'remote' && item.tierValue) {
+      deliveryType.value = 'remote';
+      document.getElementById('remote_tier').value = item.tierValue;
+    } else if (item.applyType === 'upstairs') {
+      deliveryType.value = 'upstairs';
+    } else if (item.applyType === 'ground') {
+      deliveryType.value = 'ground';
+    }
+
+    showAppliedBadge();
+    calc();
+
+    // 滑動到計算區
+    document.querySelector('.grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showAppliedBadge() {
+    document.getElementById('applied-badge').classList.add('show');
+  }
+  function hideAppliedBadge() {
+    document.getElementById('applied-badge').classList.remove('show');
+  }
+
+  // ============ 偏遠地區資料 ============
+  const REMOTE_DATA = [
+    // 雙北
+    { name: '烏來區（大羅蘭、忠治、信福、福山等）', area: '新北市', destKey: 'local', tierValue: '160_320', tierLabel: '160/320', note: '週一、四配' },
+    { name: '坪林區', area: '新北市', destKey: 'local', tierValue: '160_320', tierLabel: '160/320', note: '週四配' },
+    { name: '石碇區（光明路、北宜路等）', area: '新北市', destKey: 'local', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '石碇區（北宜路4-6段）', area: '新北市', destKey: 'local', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '土城區石門路', area: '新北市', destKey: 'local', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '北投區東山路', area: '台北市', destKey: 'local', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '八里區商港路、N5/N6 碼頭', area: '新北市', destKey: 'local', tierValue: '360_720', tierLabel: '360/720' },
+    { name: '淡水區三芝、水源里百六戛', area: '新北市', destKey: 'local', tierValue: '50_100', tierLabel: '50/100' },
+    { name: '石門區', area: '新北市', destKey: 'local', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '三峽區白雞、建安、五寮、插角等', area: '新北市', destKey: 'local', tierValue: '50_100', tierLabel: '50/100', note: '週一配' },
+    { name: '貢寮區、雙溪區', area: '新北市', destKey: 'local', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '平溪區', area: '新北市', destKey: 'local', tierValue: '160_320', tierLabel: '160/320', note: '週一三五配' },
+    { name: '瑞芳區九份、金瓜石、鼻頭、水楠洞', area: '新北市', destKey: 'local', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '金山區、野柳、萬里區', area: '新北市', destKey: 'local', tierValue: '80_160', tierLabel: '80/160' },
+
+    // 桃竹苗
+    { name: '關西鎮（金山、玉山、新富、錦山里）', area: '新竹縣', destKey: 'hsinchu', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '北埔鄉', area: '新竹縣', destKey: 'hsinchu', tierValue: '50_100', tierLabel: '50/100' },
+    { name: '尖石鄉', area: '新竹縣', destKey: 'hsinchu', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '五峰鄉', area: '新竹縣', destKey: 'hsinchu', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '泰安鄉', area: '苗栗縣', destKey: 'miaoli', tierValue: '360_720', tierLabel: '360/720', note: '週一~五配' },
+    { name: '泰安鄉（士林、象鼻、梅園村）', area: '苗栗縣', destKey: 'miaoli', tierValue: '360_720', tierLabel: '360/720', note: '週三、四、五配' },
+    { name: '獅潭鄉、大湖鄉部分村里', area: '苗栗縣', destKey: 'miaoli', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '南庄鄉東河、蓬萊村、鹿場', area: '苗栗縣', destKey: 'zhunan', tierValue: '100_200', tierLabel: '100/200', note: '週五配' },
+    { name: '大溪區復興里、新峰里、三民里', area: '桃園市', destKey: 'taoyuan', tierValue: '230_460', tierLabel: '230/460', note: '週一配' },
+    { name: '復興區（三光、華陵、達觀山等）', area: '桃園市', destKey: 'taoyuan', tierValue: '230_460', tierLabel: '230/460', note: '週一配' },
+
+    // 中彰投
+    { name: '東勢區東關路、梨山、谷關、環山', area: '台中市', destKey: 'fengyuan', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '東勢區（東關路 4-5 段、中坑坪路）', area: '台中市', destKey: 'fengyuan', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '和平區', area: '台中市', destKey: 'fengyuan', tierValue: '230_460', tierLabel: '230/460', note: 'D+3 天內配' },
+    { name: '卓蘭鎮、東勢明正里部分', area: '苗栗/台中', destKey: 'fengyuan', tierValue: '50_100', tierLabel: '50/100' },
+    { name: '信義鄉（潭南、地利、人和、雙龍村）', area: '南投縣', destKey: 'nantou', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '仁愛鄉（南豐、大同、中正、互助、新生）', area: '南投縣', destKey: 'puli', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '仁愛鄉（萬豐、親愛、德鹿谷、都達）', area: '南投縣', destKey: 'puli', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '仁愛鄉（力行、發祥、慈峰巷）', area: '南投縣', destKey: 'puli', tierValue: '360_720', tierLabel: '360/720' },
+    { name: '鹿谷鄉和雅村、溪頭', area: '南投縣', destKey: 'nantou', tierValue: '230_460', tierLabel: '230/460', note: '週一、四配' },
+    { name: '國姓鄉南港村', area: '南投縣', destKey: 'nantou', tierValue: '80_160', tierLabel: '80/160' },
+    { name: '水里鄉民和村', area: '南投縣', destKey: 'nantou', tierValue: '100_200', tierLabel: '100/200' },
+
+    // 雲嘉南
+    { name: '古坑鄉桂林、山峰、華山、華南村', area: '雲林縣', destKey: 'douliu', tierValue: '360_720', tierLabel: '360/720', note: '週一、四配' },
+    { name: '古坑鄉草嶺村、樟湖', area: '雲林縣', destKey: 'douliu', tierValue: '700_1400', tierLabel: '700/1400', note: '週一配' },
+    { name: '阿里山鄉、番路鄉部分', area: '嘉義縣', destKey: 'chiayi', tierValue: '360_720', tierLabel: '230~720/460~1440' },
+    { name: '梅山鄉太平、太興、瑞里、瑞峰、太和', area: '嘉義縣', destKey: 'chiayi', tierValue: '360_720', tierLabel: '360/720' },
+    { name: '竹崎鄉光華、桃源、白杞、紅南坑', area: '嘉義縣', destKey: 'chiayi', tierValue: '230_460', tierLabel: '230~360/460~720' },
+    { name: '台西鄉、水林鄉、東勢鄉、四湖鄉', area: '雲林縣', destKey: 'douliu', tierValue: '50_100', tierLabel: '50/100' },
+    { name: '布袋鎮、口湖鄉、東石鄉部分', area: '嘉義縣', destKey: 'chiayi', tierValue: '50_100', tierLabel: '50~100/100~200' },
+    { name: '白河區關仔嶺、南寮、大林等', area: '台南市', destKey: 'xinying', tierValue: '100_200', tierLabel: '100/200', note: '週一、四配' },
+    { name: '東山區高原、東原、六重溪等', area: '台南市', destKey: 'xinying', tierValue: '100_200', tierLabel: '100/200', note: '週一、四配' },
+    { name: '玉井、左鎮、楠西、龍崎區', area: '台南市', destKey: 'tainan', tierValue: '100_200', tierLabel: '100~160/200~320' },
+    { name: '南化區', area: '台南市', destKey: 'tainan', tierValue: '160_320', tierLabel: '160/320' },
+
+    // 高屏
+    { name: '內門、杉林、甲仙、六龜區', area: '高雄市', destKey: 'kaohsiung', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '那瑪夏、桃源、茂林區', area: '高雄市', destKey: 'kaohsiung', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '田寮區', area: '高雄市', destKey: 'gangshan', tierValue: '100_200', tierLabel: '100/200', note: '週一、五配' },
+    { name: '美濃區、旗山區', area: '高雄市', destKey: 'kaohsiung', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '萬巒鄉（成德、新厝、新置、萬金、赤山）', area: '屏東縣', destKey: 'pingtung', tierValue: '80_160', tierLabel: '80/160' },
+    { name: '春日、泰武、來義、獅子、霧台鄉', area: '屏東縣', destKey: 'pingtung', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '滿洲、牡丹、瑪家、三地門鄉', area: '屏東縣', destKey: 'pingtung', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '三地門鄉德文、大社村', area: '屏東縣', destKey: 'pingtung', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '枋山鄉、車城鄉、恆春鎮', area: '屏東縣', destKey: 'pingtung', tierValue: '80_160', tierLabel: '80/160' },
+    { name: '恆春墾丁、帆船、鵝鑾鼻里', area: '屏東縣', destKey: 'pingtung', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '林邊鄉', area: '屏東縣', destKey: 'pingtung', tierValue: '50_100', tierLabel: '50/100' },
+    { name: '南州、崁頂鄉、新埤鄉', area: '屏東縣', destKey: 'pingtung', tierValue: '50_100', tierLabel: '50~80/100~160' },
+    { name: '高樹鄉', area: '屏東縣', destKey: 'pingtung', tierValue: '50_100', tierLabel: '50/100' },
+    { name: '琉球鄉', area: '屏東縣', destKey: 'pingtung', tierValue: '160_320', tierLabel: '160元+每才30', note: '論件計費' },
+    { name: '枋寮鄉、佳冬鄉', area: '屏東縣', destKey: 'pingtung', tierValue: '80_160', tierLabel: '80/160' },
+
+    // 宜花東
+    { name: '大同鄉（棲蘭、明池、土場、寒溪等）', area: '宜蘭縣', destKey: 'luodong', tierValue: '700_1400', tierLabel: '700/1400', note: '週一配' },
+    { name: '南澳鄉（金洋、武塔、碧侯、金岳）', area: '宜蘭縣', destKey: 'luodong', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '南澳鄉（澳花、漢本）', area: '宜蘭縣', destKey: 'luodong', tierValue: '160_320', tierLabel: '160/320', note: '週一、四配' },
+    { name: '員山鄉中華村、福山植物園', area: '宜蘭縣', destKey: 'luodong', tierValue: '160_320', tierLabel: '160/320', note: '週一配' },
+    { name: '頭城濱海路 2-7 段', area: '宜蘭縣', destKey: 'luodong', tierValue: '160_320', tierLabel: '160/320', note: '週一配' },
+    { name: '壽豐鄉月眉、池南、鹽寮、水璉', area: '花蓮縣', destKey: 'hualien', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '秀林鄉銅門、文蘭、富世、和平、和中、和仁、崇德', area: '花蓮縣', destKey: 'hualien', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '豐濱鄉', area: '花蓮縣', destKey: 'hualien', tierValue: '160_320', tierLabel: '160/320', note: '週二、五配' },
+    { name: '海端鄉（利稻、霧鹿、啞口）', area: '台東縣', destKey: 'taitung', tierValue: '50_100', tierLabel: '70元/件起', note: '轉郵；5kg內70元，每5kg加20元' },
+    { name: '長濱鄉（城仔埔、長光、八仙洞）', area: '台東縣', destKey: 'taitung', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '長濱鄉（寧埔、南溪、忠勇、樟源、三間）', area: '台東縣', destKey: 'taitung', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '東河鄉（都蘭）', area: '台東縣', destKey: 'taitung', tierValue: '100_200', tierLabel: '100/200', note: '週一、三、五配' },
+    { name: '東河鄉北源村', area: '台東縣', destKey: 'taitung', tierValue: '230_460', tierLabel: '230/460', note: '週一、三、五配' },
+    { name: '太麻里鄉（金崙、多良、大溪村）', area: '台東縣', destKey: 'taitung', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '金峰、大武、達仁鄉', area: '台東縣', destKey: 'taitung', tierValue: '100_200', tierLabel: '100/200', note: '週一、三、五配' },
+    { name: '卑南鄉龍泉路、鎮樂路', area: '台東縣', destKey: 'taitung', tierValue: '80_160', tierLabel: '80/160' },
+    { name: '鹿野鄉', area: '台東縣', destKey: 'taitung', tierValue: '50_100', tierLabel: '50/100' },
+    { name: '延平鄉', area: '台東縣', destKey: 'taitung', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '初鹿牧場、檳榔牧場', area: '台東縣', destKey: 'taitung', tierValue: '230_460', tierLabel: '230/460' },
+  ];
+
+  // ============ 醫院資料 ============（含醫學中心、區域、地區醫院）
+  const HOSPITAL_DATA = [
+    // 醫學中心 / 區域醫院 — 適用 55/125 特服
+    { name: '台北榮總、新光醫院、振興醫院、和信醫院', area: '台北北投', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '台大醫院（中山南路、青島西路）', area: '台北中正', applyType: 'hospital', tierLabel: '特服 55/125', note: '另約 100/200' },
+    { name: '三軍總醫院（內湖）', area: '台北內湖', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '馬偕醫院、陽明醫院（北投）', area: '台北北投', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '萬芳醫院', area: '台北文山', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '亞東醫院', area: '新北土城', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '林口長庚醫院／長庚大學', area: '桃園龜山', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '中國醫藥大學附設醫院', area: '台中', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '台中榮總、林新醫院', area: '台中', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '署立豐原醫院', area: '台中豐原', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '澄清醫院、中山醫學院、台中醫院', area: '台中烏日', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '彰化基督教醫院（含旭光、光華、鹿東分院）', area: '彰化', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '署立彰化醫院', area: '彰化員林', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '佳里綜合醫院、新樓醫院（麻豆）', area: '台南麻豆', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '奇美醫院（永康、柳營）', area: '台南', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '新樓醫院（台南）', area: '台南', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '阮綜合醫院', area: '高雄前鎮', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '義大醫院', area: '高雄燕巢', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '門諾醫院、慈濟醫院、花蓮醫院', area: '花蓮', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '署立宜蘭醫院', area: '宜蘭', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '台東馬偕醫院', area: '台東', applyType: 'hospital', tierLabel: '特服 55/125' },
+
+    // 一般地區醫院 — 適用 100/200 聯運費
+    { name: '彰濱秀傳醫院', area: '彰化鹿港', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '雲林長庚醫院（麥寮）', area: '雲林', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '雲林台大醫院（斗六院區）', area: '雲林斗六', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '光田醫院（沙鹿、大甲）', area: '台中', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '苑裡李綜合醫院', area: '苗栗', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '高雄榮總、高雄長庚、國軍高雄總醫院', area: '高雄', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '高雄醫學大學附設醫院', area: '高雄三民', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '成大醫院', area: '台南北區', applyType: 'remote', tierValue: '80_160', tierLabel: '80/160' },
+    { name: '奇美醫院（柳營分院）', area: '台南柳營', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '署立台南醫院', area: '台南', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '基督教醫院（屏東）', area: '屏東屏工', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '屏東基督教醫院', area: '屏東', applyType: 'hospital', tierLabel: '特服 55/125' },
+  ];
+
+  // ============ 其他統倉/百貨 ============
+  const OTHER_DATA = [
+    { name: 'MOMO 物流倉（內湖、南港、三重、楊梅、大園、平鎮、台中等）', area: '全台多點', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '蝦皮統倉（楊梅、大園、平鎮、安南、安定、中壢等）', area: '全台多點', applyType: 'remote', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '酷澎統倉（觀音、大園、台中、鶯歌、岡山等）', area: '全台多點', applyType: 'remote', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '寶雅統倉（楊梅、員林、岡山、大村）', area: '全台多點', applyType: 'remote', tierValue: '160_320', tierLabel: '160/320' },
+    { name: '康是美統倉（中壢）', area: '桃園中壢', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '康是美醫藥統倉（楊梅）', area: '桃園楊梅', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '屈臣氏統倉（觀音）', area: '桃園觀音', applyType: 'remote', tierValue: '230_460', tierLabel: '230/460' },
+    { name: '家樂福各地門市（200+ 間）', area: '全台', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200', note: '所有家樂福門市一律 100/200' },
+    { name: '好市多各地門市', area: '全台', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '全聯統倉（五股、岡山、沙鹿、觀音）', area: '全台多點', applyType: 'remote', tierValue: '80_160', tierLabel: '80~100/160~200' },
+    { name: '統昶（暖暖、八堵、楊梅、湖口、台中、新市等）', area: '全台多點', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '萊爾富北倉、中倉、南倉', area: '全台', applyType: 'remote', tierValue: '50_100', tierLabel: '20/200' },
+    // 觀光區
+    { name: '日月潭、魚池鄉', area: '南投', applyType: 'hospital', tierLabel: '特服 55/125' },
+    { name: '涵碧樓', area: '南投魚池', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '劍湖山', area: '雲林古坑', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '佛陀紀念館、佛光山', area: '高雄大樹', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '傳藝中心', area: '宜蘭五結', applyType: 'remote', tierValue: '100_200', tierLabel: '100/200' },
+    { name: '小人國遊樂區', area: '桃園龍潭', applyType: 'upstairs', tierLabel: '特服 30/60' },
+    { name: '東勢林場', area: '台中東勢', applyType: 'upstairs', tierLabel: '特服 30/60' },
+    { name: '木柵動物園', area: '台北文山', applyType: 'upstairs', tierLabel: '特服 30/60' },
+    { name: '中正紀念堂、台灣大學', area: '台北', applyType: 'hospital', tierLabel: '特服 55/125' },
+  ];
+
+  // ============ 查詢渲染 ============
+  let currentTab = 'remote';
+
+  function getCurrentData() {
+    if (currentTab === 'remote') return REMOTE_DATA;
+    if (currentTab === 'hospital') return HOSPITAL_DATA;
+    return OTHER_DATA;
+  }
+
+  function getEmptyHint() {
+    if (currentTab === 'remote') return '輸入鄉鎮、村里、地名搜尋（例：阿里山、烏來、墾丁、梨山）';
+    if (currentTab === 'hospital') return '輸入醫院名稱搜尋（例：長庚、榮總、奇美、彰基）';
+    return '輸入店名搜尋（例：MOMO、家樂福、好市多、日月潭）';
+  }
+
+  function renderLookup(query) {
+    const q = query.trim().toLowerCase();
+    const resultsEl = document.getElementById('lookup_results');
+    const data = getCurrentData();
+
+    if (!q) {
+      // 沒搜尋時，顯示前 12 筆
+      let html = '<div style="font-size:11px; color:var(--ink-3); margin-bottom:8px; padding:0 4px;">' + getEmptyHint() + '　·　以下為部分常用項目</div>';
+      data.slice(0, 12).forEach((item, idx) => {
+        html += renderItem(item, idx);
+      });
+      resultsEl.innerHTML = html;
+      return;
+    }
+
+    const matched = data.filter(item =>
+      item.name.toLowerCase().includes(q) ||
+      item.area.toLowerCase().includes(q) ||
+      (item.note && item.note.toLowerCase().includes(q))
+    );
+
+    if (matched.length === 0) {
+      resultsEl.innerHTML = '<div class="lookup-empty">查無此地點，建議直接洽詢新竹物流土城營業所 412-8866 確認</div>';
+      return;
+    }
+
+    let html = '';
+    matched.slice(0, 50).forEach((item, idx) => {
+      html += renderItem(item, idx);
+    });
+    if (matched.length > 50) {
+      html += '<div class="lookup-empty">顯示前 50 筆，請輸入更精確的關鍵字</div>';
+    }
+    resultsEl.innerHTML = html;
+
+    // 綁定套用按鈕
+    document.querySelectorAll('.apply-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(e.target.dataset.idx);
+        const item = matched.length > 0 ? matched[idx] : data[idx];
+        applyLookup(item);
+      });
+    });
+  }
+
+  function renderItem(item, idx) {
+    let html = '<div class="lookup-item">';
+    html += '<div>';
+    html += '<div class="name">' + item.name + '</div>';
+    html += '<div class="area">' + item.area + (item.note ? '　·　' + item.note : '') + '</div>';
+    html += '</div>';
+    html += '<div class="fee">' + item.tierLabel + '</div>';
+    html += '<button class="apply-btn" data-idx="' + idx + '">套用</button>';
+    html += '</div>';
+    return html;
+  }
+
+  // 分頁切換
+  document.getElementById('tab-remote').addEventListener('click', () => {
+    currentTab = 'remote';
+    setActiveTab('tab-remote');
+    document.getElementById('lookup_search').placeholder = '輸入鄉鎮、村里、地名（例：阿里山、烏來、墾丁、梨山）';
+    renderLookup(document.getElementById('lookup_search').value);
+  });
+  document.getElementById('tab-hospital').addEventListener('click', () => {
+    currentTab = 'hospital';
+    setActiveTab('tab-hospital');
+    document.getElementById('lookup_search').placeholder = '輸入醫院名稱（例：長庚、榮總、奇美、彰基）';
+    renderLookup(document.getElementById('lookup_search').value);
+  });
+  document.getElementById('tab-other').addEventListener('click', () => {
+    currentTab = 'other';
+    setActiveTab('tab-other');
+    document.getElementById('lookup_search').placeholder = '輸入店名（例：MOMO、家樂福、日月潭）';
+    renderLookup(document.getElementById('lookup_search').value);
+  });
+
+  function setActiveTab(id) {
+    ['tab-remote', 'tab-hospital', 'tab-other'].forEach(t => {
+      document.getElementById(t).classList.toggle('active', t === id);
+    });
+  }
+
+  document.getElementById('lookup_search').addEventListener('input', (e) => {
+    renderLookup(e.target.value);
+  });
+
+  // 初始化
+  renderLookup('');
   calc();
 </script>
 </body>
