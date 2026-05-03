@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新竹物流運費試算 · 土城營業所</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #70B24D;
+    --brand-dark: #4F8232;
+    --brand-light: #E8F3DD;
+    --brand-bg: #F4F9EC;
+    --ink: #1A1F16;
+    --ink-2: #4A5240;
+    --ink-3: #8A917F;
+    --line: #E5E8DD;
+    --line-2: #D4D9C8;
+    --paper: #FDFDF9;
+    --warn-bg: #FFF6E5;
+    --warn-text: #8B5A00;
+    --warn-line: #F0D89E;
+    --font-sans: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: var(--font-sans); color: var(--ink); background: var(--paper); -webkit-font-smoothing: antialiased; }
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at top right, var(--brand-bg) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, #F8F4E8 0%, transparent 50%),
+      var(--paper);
+    padding: 32px 16px 64px;
+  }
+
+  /* Layout */
+  .container { max-width: 980px; margin: 0 auto; }
+  header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 20px; margin-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-mark {
+    width: 40px; height: 40px;
+    background: var(--brand); color: white;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; font-weight: 700; font-size: 18px;
+    letter-spacing: -0.5px;
+  }
+  .title-block h1 {
+    font-size: 20px; font-weight: 700; letter-spacing: -0.3px;
+    color: var(--ink);
+  }
+  .title-block .sub {
+    font-size: 13px; color: var(--ink-3); margin-top: 2px;
+    font-weight: 400;
+  }
+  .meta {
+    text-align: right; font-size: 12px; color: var(--ink-3);
+    line-height: 1.6;
+  }
+  .meta strong { color: var(--ink-2); font-weight: 500; }
+
+  /* Two column layout */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .card-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--brand-dark);
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title::before {
+    content: ''; width: 16px; height: 2px; background: var(--brand);
+  }
+
+  /* Form */
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label {
+    font-size: 12px; color: var(--ink-2); font-weight: 500;
+    margin-bottom: 6px; display: block;
+  }
+  .input, .select {
+    width: 100%; height: 38px;
+    border: 1px solid var(--line-2); border-radius: 8px;
+    background: white; padding: 0 12px;
+    font-family: var(--font-sans); font-size: 14px; color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .input:focus, .select:focus {
+    outline: none; border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(112, 178, 77, 0.15);
+  }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .input-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* Cai display */
+  .cai-display {
+    margin-top: 14px; padding: 12px 14px;
+    background: var(--brand-bg); border-radius: 8px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px;
+  }
+  .cai-display .label { color: var(--ink-2); }
+  .cai-display .value {
+    font-family: var(--font-mono); font-weight: 500;
+    color: var(--brand-dark); font-size: 15px;
+  }
+  .cai-display .raw {
+    font-size: 11px; color: var(--ink-3);
+    margin-left: 6px;
+  }
+
+  /* Mode toggle */
+  .mode-toggle {
+    display: flex; gap: 0;
+    background: var(--brand-bg); border-radius: 8px; padding: 3px;
+    margin-bottom: 14px;
+  }
+  .mode-toggle button {
+    flex: 1; padding: 7px 10px; border: 0; background: transparent;
+    font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+    color: var(--ink-2); cursor: pointer; border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .mode-toggle button.active {
+    background: white; color: var(--brand-dark);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  /* Result */
+  .result-card {
+    background: linear-gradient(135deg, var(--ink) 0%, #2C3327 100%);
+    color: white;
+    border-radius: 14px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-card::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: var(--brand); opacity: 0.15;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .result-label {
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.6); font-weight: 600;
+    margin-bottom: 6px; position: relative;
+  }
+  .result-total {
+    font-size: 42px; font-weight: 700; letter-spacing: -1px;
+    line-height: 1; position: relative;
+  }
+  .result-total .currency { font-size: 22px; font-weight: 500; opacity: 0.7; margin-right: 4px; }
+  .result-meta {
+    margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.65);
+    position: relative;
+  }
+  .breakdown {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    position: relative;
+  }
+  .breakdown-row {
+    display: grid; grid-template-columns: 1fr auto auto;
+    gap: 12px; padding: 7px 0;
+    font-size: 13px; color: rgba(255,255,255,0.85);
+  }
+  .breakdown-row .calc {
+    font-family: var(--font-mono); font-size: 11px;
+    color: rgba(255,255,255,0.5);
+  }
+  .breakdown-row .amount {
+    font-weight: 500; min-width: 56px; text-align: right;
+    color: white;
+  }
+  .breakdown-row.qima .amount::after {
+    content: '起'; font-size: 10px; opacity: 0.6;
+    margin-left: 3px; font-weight: 400;
+  }
+
+  /* Warning */
+  .warning {
+    margin-top: 14px; padding: 11px 14px;
+    background: var(--warn-bg); color: var(--warn-text);
+    border: 1px solid var(--warn-line);
+    border-radius: 8px;
+    font-size: 12px; line-height: 1.6;
+    display: flex; gap: 8px;
+  }
+  .warning::before {
+    content: '!'; flex-shrink: 0;
+    width: 16px; height: 16px;
+    background: var(--warn-text); color: var(--warn-bg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 11px;
+  }
+
+  /* Empty state */
+  .empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.5); position: relative; }
+
+  /* Footer notes */
+  .notes {
+    margin-top: 28px; padding: 18px 22px;
+    background: white; border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 12px; color: var(--ink-2); line-height: 1.8;
+  }
+  .notes strong { color: var(--ink); font-weight: 600; }
+  .notes-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .notes ul { padding-left: 18px; }
+  .notes li { margin-bottom: 4px; }
+
+  footer {
+    margin-top: 24px; text-align: center;
+    font-size: 11px; color: var(--ink-3);
+  }
+  footer a { color: var(--brand-dark); text-decoration: none; font-weight: 500; }
+
+  /* optgroup styling */
+  optgroup { font-weight: 600; color: var(--ink); }
+  option { font-weight: 400; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <div class="logo-mark">運</div>
+      <div class="title-block">
+        <h1>新竹物流運費試算</h1>
+        <div class="sub">土城營業所 · 派車到店收件</div>
+      </div>
+    </div>
+    <div class="meta">
+      <div><strong>運價依據</strong> · 107/08/01 生效版</div>
+      <div>含 5% 營業稅</div>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <!-- LEFT: Inputs -->
+    <div>
+      <!-- Cai input card -->
+      <div class="card" style="margin-bottom: 16px;">
+        <div class="card-title">材積 · 才數</div>
+
+        <div class="mode-toggle">
+          <button id="mode-dim" class="active" type="button">輸入長寬高</button>
+          <button id="mode-cai" type="button">直接輸入才數</button>
+        </div>
+
+        <div id="dim-mode">
+          <div class="field">
+            <label class="field-label">單件尺寸（公分）</label>
+            <div class="input-row">
+              <input type="number" id="length" class="input" placeholder="長" min="0" step="0.1">
+              <input type="number" id="width" class="input" placeholder="寬" min="0" step="0.1">
+              <input type="number" id="height" class="input" placeholder="高" min="0" step="0.1">
+            </div>
+          </div>
+          <div class="cai-display">
+            <span class="label">換算才數</span>
+            <span><span class="value" id="cai-out">—</span><span class="raw" id="cai-raw"></span></span>
+          </div>
+        </div>
+
+        <div id="cai-mode" style="display:none;">
+          <div class="field">
+            <label class="field-label">每件才數（手動輸入）</label>
+            <input type="number" id="cai-manual" class="input" value="2" min="1" step="1">
+          </div>
+        </div>
+
+        <div class="field" style="margin-top: 14px;">
+          <label class="field-label">件數</label>
+          <input type="number" id="qty" class="input" value="1" min="1" step="1">
+        </div>
+      </div>
+
+      <!-- Destination card -->
+      <div class="card">
+        <div class="card-title">目的地 · 配送條件</div>
+        <div class="field">
+          <label class="field-label">收件地區</label>
+          <select id="dest" class="select">
+            <optgroup label="雙北本地">
+              <option value="local">雙北市內（本地價）</option>
+            </optgroup>
+            <optgroup label="桃竹苗">
+              <option value="taoyuan">桃園 / 南崁 / 大園 / 龜山 / 八德</option>
+              <option value="zhongli">中壢 / 平鎮 / 楊梅</option>
+              <option value="hsinchu">新竹 / 新豐 / 竹北 / 竹科 / 竹東</option>
+              <option value="zhunan">竹南 / 頭份</option>
+              <option value="miaoli">苗栗</option>
+            </optgroup>
+            <optgroup label="中彰投">
+              <option value="dajia">大甲</option>
+              <option value="shalu">沙鹿 / 梧棲</option>
+              <option value="fengyuan">豐原</option>
+              <option value="taichung" selected>台中 / 烏日 / 大里 / 五權 / 中工 / 西屯</option>
+              <option value="nantou">南投 / 草屯</option>
+              <option value="puli">埔里</option>
+              <option value="changhua">彰化 / 鹿港</option>
+              <option value="yuanlin">員林 / 田中 / 埤頭</option>
+            </optgroup>
+            <optgroup label="雲嘉南">
+              <option value="douliu">斗六 / 虎尾 / 北港</option>
+              <option value="chiayi">嘉義 / 民雄</option>
+              <option value="xinying">新營</option>
+              <option value="madou">麻豆</option>
+              <option value="tainan">台南 / 永康 / 安平 / 安南</option>
+            </optgroup>
+            <optgroup label="高屏">
+              <option value="gangshan">岡山 / 大社</option>
+              <option value="kaohsiung">高雄 / 三民 / 前鎮 / 鳳山</option>
+              <option value="pingtung">屏東 / 屏工 / 潮州</option>
+            </optgroup>
+            <optgroup label="宜花東（可能另收聯運費）">
+              <option value="luodong">羅東 / 宜蘭</option>
+              <option value="hualien">花蓮 / 玉里</option>
+              <option value="taitung">台東</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">配送樓層</label>
+          <select id="floor" class="select">
+            <option value="0">1 樓 / 騎樓（一般送費）</option>
+            <option value="1">2 樓以上 / 地下室（加收特服費）</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Result -->
+    <div class="result-card" id="result"></div>
+  </div>
+
+  <!-- Notes -->
+  <div class="notes">
+    <div class="notes-title">說明</div>
+    <ul>
+      <li><strong>才數計算</strong>：長 × 寬 × 高（cm）÷ 27,000，無條件進位至整數。1 才 ＝ 10 公斤。</li>
+      <li><strong>運費組成</strong>：接費（派車收件）＋ 本款（主運費）＋ 送費（含 2 樓以上之特殊服務費）。</li>
+      <li><strong>起碼運費</strong>：每段費用都會比較「實算金額」與「起碼金額」，取較高者。小件多半吃起碼運費。</li>
+      <li><strong>偏遠地區</strong>：宜花東、離島、外島可能改收聯運費（依公告），此時送費＋特服免計，實際以新竹物流出單為準。</li>
+      <li><strong>運價區歸屬</strong>：土城屬「新北市」運價區，與台北、三重、萬華、北投、信義、新店、八里、蘆洲、五股、中和、永和、樹林、汐止同價。</li>
+    </ul>
+  </div>
+
+  <footer>
+    新竹物流客服專線 412-8866 · 本工具依運價表估算，實際費用以新竹物流出單為準
+  </footer>
+</div>
+
+<script>
+  const RATES = {
+    local:     { name: "雙北本地",      bai: 65,  qima: 50,  remote: false },
+    taoyuan:   { name: "桃園",          bai: 65,  qima: 55,  remote: false },
+    zhongli:   { name: "中壢",          bai: 95,  qima: 55,  remote: false },
+    hsinchu:   { name: "新竹",          bai: 130, qima: 55,  remote: false },
+    zhunan:    { name: "竹南/頭份",     bai: 150, qima: 55,  remote: false },
+    miaoli:    { name: "苗栗",          bai: 150, qima: 55,  remote: false },
+    dajia:     { name: "大甲",          bai: 185, qima: 55,  remote: false },
+    shalu:     { name: "沙鹿",          bai: 220, qima: 55,  remote: false },
+    fengyuan:  { name: "豐原",          bai: 220, qima: 55,  remote: false },
+    taichung:  { name: "台中",          bai: 220, qima: 55,  remote: false },
+    nantou:    { name: "南投/草屯",     bai: 255, qima: 75,  remote: false },
+    puli:      { name: "埔里",          bai: 275, qima: 75,  remote: false },
+    changhua:  { name: "彰化",          bai: 255, qima: 55,  remote: false },
+    yuanlin:   { name: "員林",          bai: 255, qima: 55,  remote: false },
+    douliu:    { name: "斗六",          bai: 275, qima: 75,  remote: false },
+    chiayi:    { name: "嘉義",          bai: 290, qima: 75,  remote: false },
+    xinying:   { name: "新營",          bai: 320, qima: 75,  remote: false },
+    madou:     { name: "麻豆",          bai: 345, qima: 85,  remote: false },
+    tainan:    { name: "台南",          bai: 365, qima: 85,  remote: false },
+    gangshan:  { name: "岡山",          bai: 390, qima: 90,  remote: false },
+    kaohsiung: { name: "高雄",          bai: 390, qima: 95,  remote: false },
+    pingtung:  { name: "屏東",          bai: 415, qima: 100, remote: false },
+    luodong:   { name: "羅東/宜蘭",     bai: 185, qima: 65,  remote: true  },
+    hualien:   { name: "花蓮",          bai: 320, qima: 175, remote: true  },
+    taitung:   { name: "台東",          bai: 560, qima: 175, remote: true  }
+  };
+
+  const PICKUP_BAI = 37, PICKUP_QIMA = 27;
+  const DELIVERY_BAI = 37, DELIVERY_QIMA = 27;
+  const SPECIAL_BAI = 60, SPECIAL_QIMA = 30;
+
+  let mode = 'dim';
+
+  function getCai() {
+    if (mode === 'dim') {
+      const l = parseFloat(document.getElementById('length').value) || 0;
+      const w = parseFloat(document.getElementById('width').value) || 0;
+      const h = parseFloat(document.getElementById('height').value) || 0;
+      if (l <= 0 || w <= 0 || h <= 0) return { cai: 0, raw: 0, valid: false };
+      const raw = (l * w * h) / 27000;
+      return { cai: Math.ceil(raw), raw: raw, valid: true };
+    } else {
+      const c = parseInt(document.getElementById('cai-manual').value);
+      return { cai: c > 0 ? c : 0, raw: c > 0 ? c : 0, valid: c > 0 };
+    }
+  }
+
+  function pickHigher(perBai, qima, ratio) {
+    const calculated = perBai * ratio;
+    return {
+      amount: Math.max(Math.round(calculated), qima),
+      isQima: calculated < qima,
+      calc: calculated
+    };
+  }
+
+  function calc() {
+    const caiData = getCai();
+    const qty = Math.max(1, parseInt(document.getElementById('qty').value) || 1);
+    const destKey = document.getElementById('dest').value;
+    const floor = parseInt(document.getElementById('floor').value);
+    const dest = RATES[destKey];
+
+    // Update cai display
+    if (mode === 'dim') {
+      const out = document.getElementById('cai-out');
+      const raw = document.getElementById('cai-raw');
+      if (caiData.valid) {
+        out.textContent = caiData.cai + ' 才';
+        raw.textContent = ' (實際 ' + caiData.raw.toFixed(2) + ' 才，進位)';
+      } else {
+        out.textContent = '—';
+        raw.textContent = '';
+      }
+    }
+
+    if (!caiData.valid) {
+      document.getElementById('result').innerHTML = '<div class="empty">請先輸入包裹尺寸</div>';
+      return;
+    }
+
+    const totalKg = caiData.cai * 10 * qty;
+    const ratio = totalKg / 100;
+
+    const pickup = pickHigher(PICKUP_BAI, PICKUP_QIMA, ratio);
+    const main = pickHigher(dest.bai, dest.qima, ratio);
+    const delivery = pickHigher(DELIVERY_BAI, DELIVERY_QIMA, ratio);
+    const special = floor === 1 ? pickHigher(SPECIAL_BAI, SPECIAL_QIMA, ratio) : null;
+
+    const total = pickup.amount + main.amount + delivery.amount + (special ? special.amount : 0);
+
+    const rows = [
+      { label: '接費（派車收件）', data: pickup, calcText: PICKUP_BAI + ' × ' + ratio.toFixed(2) },
+      { label: '本款（土城→' + dest.name + '）', data: main, calcText: dest.bai + ' × ' + ratio.toFixed(2) },
+      { label: '送費', data: delivery, calcText: DELIVERY_BAI + ' × ' + ratio.toFixed(2) }
+    ];
+    if (special) {
+      rows.push({ label: '特殊服務費（2樓↑/B1）', data: special, calcText: SPECIAL_BAI + ' × ' + ratio.toFixed(2) });
+    }
+
+    let html = '';
+    html += '<div class="result-label">總運費</div>';
+    html += '<div class="result-total"><span class="currency">NT$</span>' + total.toLocaleString() + '</div>';
+    html += '<div class="result-meta">' + caiData.cai + ' 才 × ' + qty + ' 件　·　共 ' + totalKg + ' kg　·　含 5% 稅</div>';
+    html += '<div class="breakdown">';
+    rows.forEach(r => {
+      const cls = r.data.isQima ? 'breakdown-row qima' : 'breakdown-row';
+      html += '<div class="' + cls + '">';
+      html += '<span>' + r.label + '</span>';
+      html += '<span class="calc">' + r.calcText + ' = ' + r.data.calc.toFixed(1) + '</span>';
+      html += '<span class="amount">$' + r.data.amount + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    if (dest.remote) {
+      html += '<div class="warning">' + dest.name + '屬偏遠地區，實際出貨可能改收聯運費（聯運費另計，此時送費＋特服免計）。建議首次出貨後跟單比對實際費用。</div>';
+    }
+
+    document.getElementById('result').innerHTML = html;
+  }
+
+  // Mode toggle
+  document.getElementById('mode-dim').addEventListener('click', () => {
+    mode = 'dim';
+    document.getElementById('mode-dim').classList.add('active');
+    document.getElementById('mode-cai').classList.remove('active');
+    document.getElementById('dim-mode').style.display = '';
+    document.getElementById('cai-mode').style.display = 'none';
+    calc();
+  });
+  document.getElementById('mode-cai').addEventListener('click', () => {
+    mode = 'cai';
+    document.getElementById('mode-cai').classList.add('active');
+    document.getElementById('mode-dim').classList.remove('active');
+    document.getElementById('cai-mode').style.display = '';
+    document.getElementById('dim-mode').style.display = 'none';
+    calc();
+  });
+
+  // Input listeners
+  ['length', 'width', 'height', 'cai-manual', 'qty', 'dest', 'floor'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+</script>
+</body>
+</html>
